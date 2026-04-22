@@ -1,3 +1,4 @@
+import { API_BASE_URL } from "../config";
 import Card from "../components/Card"
 import BookButton from "../components/BookButton"
 import TableData from "../components/TableData"
@@ -17,7 +18,7 @@ export default function BaceHome() {
 
   useEffect(() => {
     const baceData = async () => {
-      const response = await fetch(`http://localhost:4000/bace/get-details/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/bace/get-details/${id}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -31,7 +32,7 @@ export default function BaceHome() {
 
     // Fetch all transactions for score calculation
     const token = localStorage.getItem("token");
-    fetch("http://localhost:4000/transactions/all", {
+    fetch(`${API_BASE_URL}/transactions/all`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

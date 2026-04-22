@@ -1,3 +1,4 @@
+import { API_BASE_URL } from "../config";
 import { useState } from "react";
 import ToggleSwitch from "../components/ToggleSwitch";
 
@@ -15,7 +16,7 @@ export default function Register(){
             return;
         }
 
-        fetch('http://localhost:4000/user/register', {
+        fetch(`${API_BASE_URL}/user/register`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

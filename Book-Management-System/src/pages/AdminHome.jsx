@@ -1,3 +1,4 @@
+import { API_BASE_URL } from "../config";
 // import { Link } from "react-router-dom";
 import BookButton from "../components/BookButton";
 import Card from "../components/Card";
@@ -13,7 +14,7 @@ export default function AdminHome() {
 
   useEffect(() => {
     const getAdminData = async () => {
-      const response = await fetch(`http://localhost:4000/admin/get-details`);
+      const response = await fetch(`${API_BASE_URL}/admin/get-details`);
       const data = await response.json();
       setAdminDetails(data);
     };
@@ -21,7 +22,7 @@ export default function AdminHome() {
 
     // Fetch all transactions for score calculation
     const token = localStorage.getItem("token");
-    fetch("http://localhost:4000/transactions/all", {
+    fetch(`${API_BASE_URL}/transactions/all`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

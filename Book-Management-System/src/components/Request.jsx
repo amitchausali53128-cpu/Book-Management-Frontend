@@ -1,5 +1,7 @@
 import { jwtDecode } from "jwt-decode";
 import { useState } from "react";
+import { API_BASE_URL } from "../config";
+
 
 export default function Request({isOpen, onClose}) {
 
@@ -15,7 +17,7 @@ export default function Request({isOpen, onClose}) {
         e.preventDefault();
         const totalBooks = Number(smallBooks) + Number(bigBooks) + Number(mahaBigBooks);
         // Send allotment data to backend API
-        fetch('http://localhost:4000/bace/request', {
+        fetch(`${API_BASE_URL}/bace/request`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

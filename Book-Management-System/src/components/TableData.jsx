@@ -1,3 +1,4 @@
+import { API_BASE_URL } from "../config";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import SearchInput from "./SearchInput";
@@ -28,7 +29,7 @@ export default function TableData({ name }) {
       return;
     }
 
-    fetch("http://localhost:4000/transactions/all",{
+    fetch(`${API_BASE_URL}/transactions/all`,{
       headers: {
         Authorization: `Bearer ${token}`,
       },

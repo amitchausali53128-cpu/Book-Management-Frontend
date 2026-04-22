@@ -1,3 +1,4 @@
+import { API_BASE_URL } from "../config";
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 
@@ -5,7 +6,7 @@ export default function BaceInfo() {
     const [baceIds, setBaceIds] = useState([]);
     useEffect(
         ()=>{
-            fetch('http://localhost:4000/bace/all',{
+            fetch(`${API_BASE_URL}/bace/all`,{
                 method:'GET',
                 headers:{
                     'Content-Type':'application/json',
@@ -43,7 +44,7 @@ function BaceSlip({id}){
 
     useEffect(
         ()=>{
-            fetch(`http://localhost:4000/bace/get-details/${id}`)
+            fetch(`${API_BASE_URL}/bace/get-details/${id}`)
             .then(response => response.json())
             .then(data => {
                 setBaceData(data);

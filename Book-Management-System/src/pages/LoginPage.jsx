@@ -1,3 +1,4 @@
+import { API_BASE_URL } from "../config";
 import { useState } from "react"
 import { useAuth } from "../store/auth.jsx"
 
@@ -11,7 +12,7 @@ export default function LoginPage() {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        const response = await fetch('http://localhost:4000/user/login',{
+        const response = await fetch(`${API_BASE_URL}/user/login`,{
             method:'POST',
             headers:{
                 'Content-Type':'application/json'
@@ -31,7 +32,7 @@ export default function LoginPage() {
                     
                     e.preventDefault();
                     console.log(data.user);
-                    const res = await fetch(`http://localhost:4000/bace/getbyname/${data.user.name}`);
+                    const res = await fetch(`${API_BASE_URL}/bace/getbyname/${data.user.name}`);
                     const baceData = await res.json();
                     console.log(baceData);
                     window.location.href = `/bacehome/${baceData._id}`;

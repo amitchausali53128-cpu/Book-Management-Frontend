@@ -1,3 +1,4 @@
+import { API_BASE_URL } from "../config";
 import { useState } from "react";
 
 export default function Pay({isOpen, onClose, tx, onSuccess}) {
@@ -13,7 +14,7 @@ export default function Pay({isOpen, onClose, tx, onSuccess}) {
     alert("Amount exceeds pending balance");
     return;
 }
-        fetch("http://localhost:4000/transactions/status", {
+        fetch(`${API_BASE_URL}/transactions/status`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

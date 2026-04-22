@@ -1,3 +1,4 @@
+import { API_BASE_URL } from "../config";
 import {useState, useEffect} from "react";
 export default function Allot({isOpen, onClose, onSuccess, tx}) {
     const [bacename, setBacename] = useState('');
@@ -23,7 +24,7 @@ export default function Allot({isOpen, onClose, onSuccess, tx}) {
     e.preventDefault();
 
     try {
-        const response = await fetch('http://localhost:4000/admin/transfer', {
+        const response = await fetch(`${API_BASE_URL}/admin/transfer`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -44,7 +45,7 @@ export default function Allot({isOpen, onClose, onSuccess, tx}) {
         if (data.success) {
             // Check if tx exists and has an _id
             if (tx && tx._id) {
-                await fetch("http://localhost:4000/transactions/delete", {
+                await fetch(`${API_BASE_URL}/transactions/delete`, {
                     method: "DELETE",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ id: tx._id }),
