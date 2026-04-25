@@ -1,5 +1,5 @@
 import { API_BASE_URL } from "../config";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import SearchInput from "./SearchInput";
 import Pay from "./Pay";
@@ -41,18 +41,18 @@ export default function TableData({ name }) {
       );
   }, []);
 
+
   // ✅ Combined filtering (role + search)
   const transactions = allTransactionsdata.filter((transaction) => {
-    const matchesRole =
-      name === "Admin" || transaction.bace === name;
-
+    const matchesRole = name === "Admin" || transaction.bace === name;
     const matchesSearch =
       query.trim() === "" ||
       transaction.bace?.toLowerCase().includes(query.toLowerCase()) ||
       transaction.transaction_id?.toLowerCase().includes(query.toLowerCase());
-
     return matchesRole && matchesSearch;
   });
+
+
 
   return (
     <div>
@@ -60,51 +60,42 @@ export default function TableData({ name }) {
       <div className="mb-2">
         <SearchInput onSearch={setQuery} />
       </div>
-      {/* Scrollable table container */}
-      <div className="max-h-[400px] overflow-y-auto border rounded-lg">
-        <table className="min-w-full">
-          <thead className="sticky top-0 bg-gray-200 z-10">
-            <tr>
-              <th className="px-4 py-2">Date</th>
-            <th className="px-4 py-2">Time</th>
-            <th className="px-4 py-2">Bace Name</th>
-            <th className="px-4 py-2">Transaction ID</th>
-            <th className="px-4 py-2">Total books</th>
-            <th className="px-4 py-2">Amount</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          {transactions.map((transaction) => (
-            <tr
-              key={transaction._id}
-              className="text-center shadow-md transition transform hover:-translate-y-2 hover:shadow-xl"
-            >
-              <td className="px-4 py-2">
-                {new Date(transaction.timestamp).toDateString()}
-              </td>
-              <td className="px-4 py-2">
-                {new Date(transaction.timestamp).toLocaleTimeString()}
-              </td>
-              <td className="px-4 py-2">{transaction.bace}</td>
-              <td className="px-4 py-2 relative flex items-center justify-center">
-                <span>{transaction.transaction_id}</span>
-                {transaction.desc && (
-                  <span
-                    className="ml-2 cursor-pointer relative inline-flex items-center"
-                    onMouseEnter={() => setHoveredTxId(transaction._id)}
-                    onMouseLeave={() => setHoveredTxId(null)}
-                    data-tooltip-id={transaction._id}
-                  >
-                    <FiInfo className="text-xl text-gray-500 hover:text-blue-500 transition-colors duration-200" />
-                  </span>
-                )}
+      {/* Responsive scrollable table container */}
+      <div className="max-h-[400px] overflow-x-auto overflow-y-auto border rounded-lg bg-gray-50 p-2 font-lato">
+        <div className="min-w-full">
+          <div className="grid grid-cols-6 gap-2 font-semibold bg-gray-200 rounded-t-lg px-2 py-3 text-center text-sm md:text-base">
+            <div>Date</div>
+            <div>Time</div>
+            <div>Bace Name</div>
+            <div>Transaction ID</div>
+            <div>Total books</div>
+            <div>Amount</div>
+          </div>
+          <div className="space-y-4 mt-2">
+            {transactions.map((row) => (
+              <div
+                key={row._id}
+                className="grid grid-cols-6 gap-2 items-center bg-white rounded-xl shadow-lg px-2 py-4 text-center transition-transform duration-200 hover:-translate-y-1 hover:shadow-2xl border border-gray-200"
+              >
+                <div>{new Date(row.timestamp).toDateString()}</div>
+                <div>{new Date(row.timestamp).toLocaleTimeString()}</div>
+                <div>{row.bace}</div>
+                <div>
+                  <div className="flex items-center justify-center relative">
+                    <span>{row.transaction_id}</span>
+                    {row.desc && (
+                      <span
+                        className="ml-2 cursor-pointer relative inline-flex items-center"
+                        onMouseEnter={() => setHoveredTxId(row._id)}
+                        onMouseLeave={() => setHoveredTxId(null)}
+                        data-tooltip-id={row._id}
+                      >
+                        <FiInfo className="text-xl text-gray-500 hover:text-blue-500 transition-colors duration-200" />
+                      </span>
+                    )}
                     {/* Tooltip Portal */}
-                    {hoveredTxId && (() => {
-                      const tx = transactions.find(t => t._id === hoveredTxId);
-                      if (!tx || !tx.desc) return null;
-                      // Get the icon's position
-                      const iconEl = document.querySelector(`[data-tooltip-id='${hoveredTxId}']`);
+                    {hoveredTxId === row._id && row.desc && (() => {
+                      const iconEl = document.querySelector(`[data-tooltip-id='${row._id}']`);
                       let style = { position: 'fixed', left: '50vw', top: '20vh', zIndex: 9999 };
                       if (iconEl) {
                         const rect = iconEl.getBoundingClientRect();
@@ -118,39 +109,37 @@ export default function TableData({ name }) {
                       }
                       return createPortal(
                         <div style={style} className="min-w-[200px] max-w-xs bg-white border border-gray-400 shadow-lg rounded p-2 text-left text-gray-800 font-normal animate-fade-in">
-                          <span className="font-semibold">Description: </span>{tx.desc}
+                          <span className="font-semibold">Description: </span>{row.desc}
                         </div>,
                         document.body
                       );
                     })()}
-              </td>
-              <td className="px-4 py-2">{transaction.total_books}</td>
-              <td className="px-4 py-2 flex flex-wrap justify-center">{transaction.amount.paid}
-                {transaction.amount.pending !== 0 && name !=='Admin' && role !=='admin' &&(
-                <div onClick={
-                  
-            ()=>{setPayVisible(true); setSelectedTx(transaction)}
-          }>
-                <button className="px-2 bg-blue-400 text-white rounded-md ml-4 hover:bg-blue-600 transition duration-300">
-                  Pay
-                </button>
-                </div>)
-                }
-                {transaction.amount.pending ==0 && transaction.amount.paid == 0 && role == 'admin' && (
-                  <div onClick={
-                  
-            ()=>{setAllotVisible(true); setSelectedTx(transaction)}
-          }>
-                <button className="px-2 bg-green-600 text-white rounded-md ml-4 hover:bg-green-800 transition duration-300">
-                  Allot
-                </button>
+                  </div>
                 </div>
-                )}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-        </table>
+                <div>{row.total_books}</div>
+                <div>
+                  <div className="flex flex-wrap justify-center items-center">
+                    {row.amount.paid}
+                    {row.amount.pending !== 0 && name !== 'Admin' && role !== 'admin' && (
+                      <div onClick={() => { setPayVisible(true); setSelectedTx(row); }}>
+                        <button className="px-2 bg-blue-300 text-lg rounded-md ml-2 sm:ml-4 hover:bg-blue-600 transition duration-300">
+                          Pay
+                        </button>
+                      </div>
+                    )}
+                    {row.amount.pending === 0 && row.amount.paid === 0 && role === 'admin' && (
+                      <div onClick={() => { setAllotVisible(true); setSelectedTx(row); }}>
+                        <button className="px-2 bg-yellow-200 rounded-md ml-2 sm:ml-4 hover:bg-green-800 transition duration-300 font-outfit text-lg">
+                          Allot
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
       <Pay isOpen={payVisible} onClose={() => setPayVisible(false)} tx={selectedTx}  onSuccess={(updatedTx) => {
         setAllTransactionsdata((prev) =>

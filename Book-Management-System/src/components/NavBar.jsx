@@ -18,8 +18,8 @@ export default function NavBar(){
         }
     }, [token]);
     return(
-        <div className="bg-blue-300 text-white p-2 text-xl font-bold text-center gap-4 flex items-center justify-center">
-            {role === 'admin' && <Link to="/admin/dashboard" className="ml-4">Admin Home</Link>}
+        <div className="bg-green-300 p-2 font-outfit text-center gap-2 sm:gap-4 flex flex-wrap items-center justify-center w-full">
+            {role === 'admin' && <Link to="/admin/dashboard" className="ml-2 sm:ml-4">Admin Home</Link>}
 
             {token ? (
                 <>
@@ -31,7 +31,6 @@ export default function NavBar(){
                 <Link to="/register" >Register</Link>   
                 </>
             )}
-            
         </div>
     )
 }

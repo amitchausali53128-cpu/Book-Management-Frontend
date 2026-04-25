@@ -5,6 +5,9 @@ import Card from "../components/Card";
 import TableData from "../components/TableData";
 import Allot from "../components/Allot";
 import {  useEffect, useState } from "react";
+import { SiBookstack } from "react-icons/si";
+import { MdSportsScore } from "react-icons/md";
+import { GrTransaction } from "react-icons/gr";
 
 export default function AdminHome() {
 
@@ -53,11 +56,11 @@ export default function AdminHome() {
   return (
     <div>
 
-      <div className="flex justify-between flex-wrap px-6 hareKrsnaitems-center">
+      <div className="flex justify-between">
         <Card title={'Admin'} desc={''} bg={'oklch(79.5% 0.184 86.047) '} />
         <div className="flex flex-wrap items-center justify-center">
-        <Card title={'Instock'} desc={adminDetails.big_books} bg={'oklch(64.8% 0.2 131.684)'} />
-        <Card title={'This month Score'} desc={monthScore} bg={'oklch(43.2% 0.232 292.759)'} />
+        <Card title={'Instock'} desc={adminDetails.big_books} bg={'oklch(64.8% 0.2 131.684)'} icon={SiBookstack}/>
+        <Card title={'This month Score'} desc={monthScore} bg={'oklch(43.2% 0.232 292.759)'} icon={MdSportsScore} />
 
         <div className="flex flex-col items-center justify-center">
 
@@ -78,7 +81,7 @@ export default function AdminHome() {
       </div>
       
       <div className="m-2">
-        <div className="m-2 text-2xl ">Transaction History</div>
+        <div className="flex gap-2 m-2 text-2xl "><GrTransaction/> Transaction History</div>
 
         <div className="max-h-[70vh] overflow-y-auto border rounded-lg">
           <TableData name='Admin' />

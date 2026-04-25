@@ -6,6 +6,9 @@ import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom";
 import Pay from "../components/Pay";
 import Request from "../components/Request";
+import { SiBookstack } from "react-icons/si";
+import { MdSportsScore } from "react-icons/md";
+import { jwtDecode } from "jwt-decode";
 
 export default function BaceHome() {
 
@@ -15,6 +18,14 @@ export default function BaceHome() {
   const [requestVisible, setRequestVisible] = useState(false);
   const [transactions, setTransactions] = useState([]);
   const [monthScore, setMonthScore] = useState(0);
+  const [role, setRole] = useState("bace");
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const decoded = jwtDecode(token);
+    setRole(decoded.role);
+    },[])
+  
 
   useEffect(() => {
     const baceData = async () => {
@@ -62,17 +73,19 @@ export default function BaceHome() {
     <div>
 
       <div className="flex justify-between flex-wrap px-6 items-center">
-        <Card title={baceDetails.name} desc={'location'} bg={'oklch(79.5% 0.184 86.047) '} />
+        <Card title={'BACE Name'} desc={baceDetails.name} bg={'oklch(79.5% 0.184 86.047) '} />
         <div className="flex flex-wrap items-center justify-center">
-        <Card title={'Instock'} desc={baceDetails.total_books} bg={'oklch(64.8% 0.2 131.684)'} />
-        <Card title={'This month Score'} desc={monthScore} bg={'oklch(43.2% 0.232 292.759)'} />
-
-        <div className="flex flex-col items-center justify-center">
+        <Card title={'Instock'} desc={baceDetails.total_books} bg={'oklch(64.8% 0.2 131.684)'} icon={SiBookstack}/>
+        <Card title={'This month Score'} desc={monthScore} bg={'oklch(43.2% 0.232 292.759)'} icon={MdSportsScore}/>
+        {
+          role !== 'admin' &&
+          <div className="flex flex-col items-center justify-center">
 
           < BookButton title={'Request Books'} color={'oklch(64.8% 0.2 131.684)'} onClick={()=>setRequestVisible(true)}/>
-
           
         </div>
+        }
+        
 
       </div>
 

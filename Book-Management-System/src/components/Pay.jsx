@@ -40,7 +40,7 @@ export default function Pay({isOpen, onClose, tx, onSuccess}) {
  
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-            <div className="bg-white p-8 rounded-xl shadow-2xl w-96 relative animate-in fade-in zoom-in duration-200">
+            <div className="bg-white p-4 sm:p-8 rounded-xl shadow-2xl w-full max-w-xs sm:max-w-md relative animate-in fade-in zoom-in duration-200">
                 <button onClick={onClose} className="absolute top-2 right-2 text-white hover:text-gray-700 bg-red-500 rounded-full p-1 font-bold text-xl">
                     Close
                     </button>

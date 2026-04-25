@@ -1,7 +1,7 @@
 export default function TrDetail(){
     return (
         <div className="h-screen flex items-center justify-center bg-gray-100">
-            <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+            <div className="bg-white p-4 sm:p-8 rounded-lg shadow-md w-full max-w-xs sm:max-w-md">
                 <h2 className="text-2xl font-bold mb-6 text-center">Transaction Details</h2>
                 <div className="space-y-4">
                     <div>
