@@ -4,6 +4,7 @@ import BookButton from "../components/BookButton";
 import Card from "../components/Card";
 import TableData from "../components/TableData";
 import Allot from "../components/Allot";
+import AddStock from "../components/AddStock";
 import {  useEffect, useState } from "react";
 import { SiBookstack } from "react-icons/si";
 import { MdSportsScore } from "react-icons/md";
@@ -52,6 +53,7 @@ export default function AdminHome() {
   
 
   const [allotVisible, setAllotVisible] = useState(false);
+  const [addStockVisible, setAddStockVisible] = useState(false);
 
   return (
     <div>
@@ -59,7 +61,11 @@ export default function AdminHome() {
       <div className="flex justify-between">
         <Card title={'Admin'} desc={''} bg={'oklch(79.5% 0.184 86.047) '} />
         <div className="flex flex-wrap items-center justify-center">
-        <Card title={'Instock'} desc={adminDetails.big_books} bg={'oklch(64.8% 0.2 131.684)'} icon={SiBookstack}/>
+          < BookButton title={'Add Books'} color={'oklch(64.8% 0.2 131.684)'} onClick={()=>{
+              setAddStockVisible(true);
+                            
+            }} />
+        <Card title={'Instock'} desc={adminDetails.total_books} bg={'oklch(64.8% 0.2 131.684)'} icon={SiBookstack}/>
         <Card title={'This month Score'} desc={monthScore} bg={'oklch(43.2% 0.232 292.759)'} icon={MdSportsScore} />
 
         <div className="flex flex-col items-center justify-center">
@@ -67,7 +73,6 @@ export default function AdminHome() {
           <div onClick={
             ()=>{
               setAllotVisible(true);
-              console.log(adminDetails);
                             
             }
           }>
@@ -91,6 +96,11 @@ export default function AdminHome() {
 
       <Allot isOpen={allotVisible}
         onClose={()=>setAllotVisible(false)}
+        onSuccess={()=>{}}
+      />
+
+      <AddStock isOpen={addStockVisible}
+        onClose={()=>setAddStockVisible(false)}
         onSuccess={()=>{}}
       />
 
